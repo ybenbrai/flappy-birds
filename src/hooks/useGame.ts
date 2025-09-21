@@ -20,10 +20,9 @@ export function useGame() {
     isPlaying: false,
     isGameOver: false,
     isPaused: false,
+    isDebugMode: false,
     score: 0,
     highScore: 0,
-    level: 1,
-    experience: 0,
 
     // Game objects
     bird: initialBird,
@@ -36,6 +35,7 @@ export function useGame() {
     pipeSpeed: config.pipes.speed,
     pipeGap: config.pipes.gap,
     pipeWidth: config.pipes.width,
+    pipeSpacing: config.pipes.spacing,
     pipeSpawnRate: config.pipes.spawnRate,
     gameWidth: config.dimensions.width,
     gameHeight: config.dimensions.height,
@@ -133,58 +133,97 @@ export function useGame() {
           }))
           .filter((pipe) => pipe.x > -state.pipeWidth);
 
-        const updatedPipes = newPipes.map((pipe) => ({
-          ...pipe,
-          passed:
-            pipe.x + state.pipeWidth < state.bird.position.x || pipe.passed,
-        }));
+        // Count pipes that bird has passed and mark them as passed
+        let scoreIncrement = 0;
+        const updatedPipes = newPipes.map((pipe) => {
+          if (
+            !pipe.passed &&
+            pipe.x + state.pipeWidth < state.bird.position.x
+          ) {
+            scoreIncrement++;
+            return { ...pipe, passed: true };
+          }
+          return pipe;
+        });
 
-        const newScore =
-          state.score +
-          updatedPipes.filter(
-            (pipe) =>
-              pipe.x + state.pipeWidth < state.bird.position.x && !pipe.passed
-          ).length;
+        const newScore = state.score + scoreIncrement;
 
         const shouldSpawnPipe =
-          state.pipes.length === 0 ||
-          state.pipes[state.pipes.length - 1].x <
-            state.gameWidth - state.pipeSpawnRate;
+          updatedPipes.length === 0 ||
+          updatedPipes[updatedPipes.length - 1].x <
+            state.gameWidth - state.pipeSpacing;
 
         if (shouldSpawnPipe) {
-          const pipeHeight =
-            Math.random() *
-              (state.gameHeight -
-                state.pipeGap -
-                config.pipes.minHeight -
-                config.pipes.maxHeight) +
-            config.pipes.minHeight;
+          // Create different pipe patterns for variety
+          const patterns = [
+            // Pattern 1: Random height
+            () => {
+              const pipeHeight =
+                Math.random() *
+                  (state.gameHeight -
+                    state.pipeGap -
+                    config.pipes.minHeight -
+                    config.pipes.maxHeight) +
+                config.pipes.minHeight;
+              return {
+                topHeight: pipeHeight,
+                bottomHeight: state.gameHeight - pipeHeight - state.pipeGap,
+              };
+            },
+            // Pattern 2: Low pipes (harder)
+            () => {
+              const pipeHeight = config.pipes.minHeight + Math.random() * 50;
+              return {
+                topHeight: pipeHeight,
+                bottomHeight: state.gameHeight - pipeHeight - state.pipeGap,
+              };
+            },
+            // Pattern 3: High pipes (harder)
+            () => {
+              const pipeHeight = config.pipes.maxHeight - Math.random() * 50;
+              return {
+                topHeight: pipeHeight,
+                bottomHeight: state.gameHeight - pipeHeight - state.pipeGap,
+              };
+            },
+            // Pattern 4: Very tight gap
+            () => {
+              const pipeHeight =
+                Math.random() *
+                  (state.gameHeight -
+                    state.pipeGap * 0.7 -
+                    config.pipes.minHeight -
+                    config.pipes.maxHeight) +
+                config.pipes.minHeight;
+              return {
+                topHeight: pipeHeight,
+                bottomHeight:
+                  state.gameHeight - pipeHeight - state.pipeGap * 0.7,
+              };
+            },
+          ];
+
+          const pattern = patterns[Math.floor(Math.random() * patterns.length)];
+          const { topHeight, bottomHeight } = pattern();
+
           const newPipe: Pipe = {
             id: Date.now().toString(),
             x: state.gameWidth,
-            topHeight: pipeHeight,
-            bottomHeight: state.gameHeight - pipeHeight - state.pipeGap,
+            topHeight,
+            bottomHeight,
             gap: state.pipeWidth,
             passed: false,
           };
-          newPipes.push(newPipe);
+          updatedPipes.push(newPipe);
         }
 
-        const isCollision = checkCollision(newBird, newPipes, state);
-
-        // Calculate experience and level
-        const experienceGained = Math.floor(newScore / 10);
-        const newExperience = state.experience + experienceGained;
-        const newLevel = Math.floor(newExperience / 1000) + 1;
-        // const leveledUp = newLevel > state.level; // Could be used for level up effects
+        const isCollision = checkCollision(newBird, updatedPipes, state);
 
         return {
           ...state,
           bird: newBird,
-          pipes: newPipes,
+          pipes: updatedPipes,
           score: newScore,
-          experience: newExperience,
-          level: newLevel,
           isGameOver: isCollision,
           highScore: isCollision
             ? Math.max(state.highScore, newScore)
@@ -217,12 +256,6 @@ export function useGame() {
           replayActions: [],
         };
 
-      case "LEVEL_UP":
-        return {
-          ...state,
-          // Level up effects could be added here
-        };
-
       case "SCORE_UPDATE":
         return {
           ...state,
@@ -243,6 +276,12 @@ export function useGame() {
           startTime: undefined,
         };
 
+      case "TOGGLE_DEBUG_MODE":
+        return {
+          ...state,
+          isDebugMode: !state.isDebugMode,
+        };
+
       default:
         return state;
     }
@@ -253,6 +292,11 @@ export function useGame() {
     pipes: Pipe[],
     state: GameState
   ): boolean {
+    // Skip collision check in debug mode
+    if (state.isDebugMode) {
+      return false;
+    }
+
     if (bird.position.y < 0 || bird.position.y + bird.size > state.gameHeight) {
       return true;
     }
@@ -286,6 +330,10 @@ export function useGame() {
 
   const resumeGame = useCallback(() => {
     dispatch({ type: "RESUME_GAME" });
+  }, []);
+
+  const toggleDebugMode = useCallback(() => {
+    dispatch({ type: "TOGGLE_DEBUG_MODE" });
   }, []);
 
   const jump = useCallback(() => {
@@ -336,5 +384,6 @@ export function useGame() {
     resumeGame,
     jump,
     resetGame,
+    toggleDebugMode,
   };
 }

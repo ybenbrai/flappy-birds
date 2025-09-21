@@ -12,8 +12,10 @@ export default function Background({ gameWidth, gameHeight }: BackgroundProps) {
 
   return (
     <div
-      className="absolute inset-0 w-full h-full"
+      className="absolute inset-0"
       style={{
+        width: `${gameWidth}px`,
+        height: `${gameHeight}px`,
         background: `linear-gradient(to bottom, ${config.visual.skyGradientStart}, ${config.visual.skyGradientEnd})`,
       }}
     >

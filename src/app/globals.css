@@ -59,25 +59,3 @@ body {
   height: 100vh;
   width: 100vw;
 }
-
-/* Responsive game scaling */
-.game-container {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  max-width: 100vw;
-  max-height: 100vh;
-}
-
-/* Mobile optimizations */
-@media (max-width: 768px) {
-  .game-container {
-    padding: 0.5rem;
-  }
-}
-
-@media (max-height: 600px) {
-  .game-container {
-    padding: 0.25rem;
-  }
-}

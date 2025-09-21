@@ -217,6 +217,31 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
                   {config.pipes.width}px
                 </span>
               </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-1">
+                  Pipe Spacing
+                </label>
+                <input
+                  type="range"
+                  min="100"
+                  max="400"
+                  step="20"
+                  value={config.pipes.spacing}
+                  onChange={(e) =>
+                    updateConfig({
+                      pipes: {
+                        ...config.pipes,
+                        spacing: parseInt(e.target.value),
+                      },
+                    })
+                  }
+                  className="w-full"
+                />
+                <span className="text-xs text-gray-500">
+                  {config.pipes.spacing}px
+                </span>
+              </div>
             </div>
 
             <div className="mt-6">

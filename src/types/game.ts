@@ -29,10 +29,9 @@ export interface GameState {
   isPlaying: boolean;
   isGameOver: boolean;
   isPaused: boolean;
+  isDebugMode: boolean;
   score: number;
   highScore: number;
-  level: number;
-  experience: number;
 
   // Game objects
   bird: Bird;
@@ -45,6 +44,7 @@ export interface GameState {
   pipeSpeed: number;
   pipeGap: number;
   pipeWidth: number;
+  pipeSpacing: number;
   pipeSpawnRate: number;
   gameWidth: number;
   gameHeight: number;
@@ -102,9 +102,9 @@ export type GameAction =
   | { type: "RESET_GAME" }
   | { type: "UPDATE_GAME" }
   | { type: "GAME_OVER" }
-  | { type: "LEVEL_UP" }
   | { type: "POWERUP_COLLECTED"; powerUpId: string }
   | { type: "POWERUP_EXPIRED"; powerUpId: string }
   | { type: "SCORE_UPDATE"; points: number }
   | { type: "SESSION_START"; sessionId: string }
-  | { type: "SESSION_END" };
+  | { type: "SESSION_END" }
+  | { type: "TOGGLE_DEBUG_MODE" };

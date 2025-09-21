@@ -12,6 +12,7 @@ export interface GameConfig {
     speed: number;
     gap: number;
     width: number;
+    spacing: number; // Distance between pipes
     spawnRate: number;
     minHeight: number;
     maxHeight: number;
@@ -93,17 +94,18 @@ export const defaultGameConfig: GameConfig = {
   },
 
   pipes: {
-    speed: 1.8,
-    gap: 160,
-    width: 55,
-    spawnRate: 140,
-    minHeight: 100,
-    maxHeight: 300,
+    speed: 2.5,
+    gap: 130,
+    width: 60,
+    spacing: 180, // Distance between pipe pairs
+    spawnRate: 120,
+    minHeight: 80,
+    maxHeight: 350,
   },
 
   dimensions: {
-    width: 400, // Base width for calculations
-    height: 600, // Base height for calculations
+    width: 400,
+    height: 600,
   },
 
   visual: {
@@ -180,6 +182,7 @@ export const difficultyLevels: Record<string, Partial<GameConfig>> = {
       spawnRate: 180,
       minHeight: 100,
       maxHeight: 300,
+      spacing: 250,
     },
   },
 
@@ -196,6 +199,7 @@ export const difficultyLevels: Record<string, Partial<GameConfig>> = {
       speed: 1.5,
       gap: 180,
       width: 50,
+      spacing: 200,
       spawnRate: 150,
       minHeight: 100,
       maxHeight: 300,
@@ -215,6 +219,7 @@ export const difficultyLevels: Record<string, Partial<GameConfig>> = {
       speed: 2.2,
       gap: 140,
       width: 60,
+      spacing: 150,
       spawnRate: 120,
       minHeight: 100,
       maxHeight: 300,
@@ -234,6 +239,7 @@ export const difficultyLevels: Record<string, Partial<GameConfig>> = {
       speed: 3.0,
       gap: 120,
       width: 70,
+      spacing: 120,
       spawnRate: 100,
       minHeight: 100,
       maxHeight: 300,
