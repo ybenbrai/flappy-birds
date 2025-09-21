@@ -1,36 +1,96 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Flappy Bird Clone
+
+A faithful recreation of the classic Flappy Bird game built with Next.js, TypeScript, and Tailwind CSS.
+
+## Features
+
+- 🎮 Classic Flappy Bird gameplay mechanics
+- 🎨 Beautiful pixel-perfect graphics with CSS
+- 🔊 Sound effects for jumps, scoring, and game over
+- 📱 Mobile-friendly with touch controls
+- ⚡ Smooth 60fps gameplay
+- 🏆 High score tracking
+- 🎯 Responsive design
+
+## How to Play
+
+- **Desktop**: Press `SPACE` or click to make the bird jump
+- **Mobile**: Tap the screen to make the bird jump
+- Avoid hitting the pipes or the ground
+- Try to get the highest score possible!
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
+
+```bash
+npm install
+```
+
+2. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Game Controls
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Space Bar**: Jump (Desktop)
+- **Mouse Click**: Jump (Desktop)
+- **Touch**: Jump (Mobile)
 
-## Learn More
+## Game Mechanics
 
-To learn more about Next.js, take a look at the following resources:
+- **Gravity**: The bird falls continuously due to gravity
+- **Jump Force**: Each jump gives the bird upward velocity
+- **Pipe Generation**: Pipes spawn at random heights
+- **Collision Detection**: Precise collision detection with pipes and boundaries
+- **Scoring**: Score increases when passing through pipes
+- **High Score**: Best score is saved during the session
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Technical Details
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Built with Next.js 14 and TypeScript
+- Styled with Tailwind CSS
+- Uses React hooks for state management
+- Web Audio API for sound effects
+- RequestAnimationFrame for smooth gameplay
+- Responsive design for all screen sizes
 
-## Deploy on Vercel
+## Project Structure
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+src/
+├── components/
+│   ├── game/
+│   │   ├── Bird.tsx          # Bird component
+│   │   ├── Pipe.tsx          # Pipe component
+│   │   ├── Background.tsx    # Background with clouds
+│   │   ├── Game.tsx          # Main game component
+│   │   └── GameUI.tsx        # UI overlays
+│   └── ui/
+│       └── Button.tsx        # Reusable button component
+├── hooks/
+│   ├── useGame.ts            # Game logic and state
+│   └── useSound.ts           # Sound effects
+├── types/
+│   └── game.ts               # TypeScript interfaces
+└── lib/
+    └── utils.ts              # Utility functions
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contributing
+
+Feel free to contribute to this project by:
+
+- Adding new features
+- Improving the graphics
+- Adding more sound effects
+- Optimizing performance
+- Fixing bugs
+
+## License
+
+This project is open source and available under the MIT License.
