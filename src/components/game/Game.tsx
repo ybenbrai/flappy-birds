@@ -5,7 +5,7 @@ import { useGame } from "@/hooks/useGame";
 import Bird from "./Bird";
 import Pipe from "./Pipe";
 import Background from "./Background";
-import GameUI from "./GameUI";
+import GameUI from "@/components/game/GameUI";
 
 export default function Game() {
   const { state, startGame, jump, resetGame } = useGame();

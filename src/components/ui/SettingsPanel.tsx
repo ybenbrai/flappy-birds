@@ -54,7 +54,9 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
           ].map((tab) => (
             <Button
               key={tab.id}
-              onClick={() => setActiveTab(tab.id as any)}
+              onClick={() =>
+                setActiveTab(tab.id as "physics" | "visual" | "sound" | "ui")
+              }
               variant={activeTab === tab.id ? "primary" : "secondary"}
               size="sm"
             >
@@ -364,7 +366,7 @@ export default function SettingsPanel({ isOpen, onClose }: SettingsPanelProps) {
             <div className="mt-6">
               <h4 className="text-md font-semibold mb-2">Theme Presets</h4>
               <div className="grid grid-cols-2 gap-2">
-                {Object.entries(themePresets).map(([key, theme]) => (
+                {Object.entries(themePresets).map(([key]) => (
                   <Button
                     key={key}
                     onClick={() => setTheme(key)}

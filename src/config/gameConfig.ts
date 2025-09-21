@@ -178,6 +178,8 @@ export const difficultyLevels: Record<string, Partial<GameConfig>> = {
       gap: 200,
       width: 40,
       spawnRate: 180,
+      minHeight: 100,
+      maxHeight: 300,
     },
   },
 
@@ -195,6 +197,8 @@ export const difficultyLevels: Record<string, Partial<GameConfig>> = {
       gap: 180,
       width: 50,
       spawnRate: 150,
+      minHeight: 100,
+      maxHeight: 300,
     },
   },
 
@@ -212,6 +216,8 @@ export const difficultyLevels: Record<string, Partial<GameConfig>> = {
       gap: 140,
       width: 60,
       spawnRate: 120,
+      minHeight: 100,
+      maxHeight: 300,
     },
   },
 
@@ -229,6 +235,8 @@ export const difficultyLevels: Record<string, Partial<GameConfig>> = {
       gap: 120,
       width: 70,
       spawnRate: 100,
+      minHeight: 100,
+      maxHeight: 300,
     },
   },
 };
