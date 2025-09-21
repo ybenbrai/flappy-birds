@@ -86,8 +86,8 @@ export interface GameConfig {
 // Default Configuration
 export const defaultGameConfig: GameConfig = {
   physics: {
-    gravity: 0.25,
-    jumpForce: -5.5,
+    gravity: 0.2,
+    jumpForce: -5,
     birdSize: 30,
     birdRotationMultiplier: 3,
   },
@@ -102,8 +102,8 @@ export const defaultGameConfig: GameConfig = {
   },
 
   dimensions: {
-    width: 400,
-    height: 600,
+    width: 400, // Base width for calculations
+    height: 600, // Base height for calculations
   },
 
   visual: {

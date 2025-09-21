@@ -13,19 +13,16 @@ export default function Pipe({ pipe, gameHeight }: PipeProps) {
 
   return (
     <div
-      className="absolute z-5"
+      className="absolute z-5 top-0 h-full"
       style={{
-        left: `${pipe.x}px`,
-        top: 0,
-        width: `${pipe.gap}px`,
-        height: `${gameHeight}px`,
+        left: `${(pipe.x / 400) * 100}%`,
+        width: `${(pipe.gap / 400) * 100}%`,
       }}
     >
       <div
-        className="relative shadow-lg"
+        className="relative shadow-lg w-full"
         style={{
-          height: `${pipe.topHeight}px`,
-          width: `${pipe.gap}px`,
+          height: `${(pipe.topHeight / 600) * 100}%`,
           backgroundColor: config.visual.pipeColor,
           border: `2px solid ${config.visual.pipeBorderColor}`,
         }}
@@ -40,12 +37,9 @@ export default function Pipe({ pipe, gameHeight }: PipeProps) {
         ></div>
       </div>
       <div
-        className="relative shadow-lg"
+        className="relative shadow-lg w-full absolute bottom-0"
         style={{
-          height: `${pipe.bottomHeight}px`,
-          width: `${pipe.gap}px`,
-          position: "absolute",
-          bottom: 0,
+          height: `${(pipe.bottomHeight / 600) * 100}%`,
           backgroundColor: config.visual.pipeColor,
           border: `2px solid ${config.visual.pipeBorderColor}`,
         }}

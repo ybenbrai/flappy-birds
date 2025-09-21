@@ -26,13 +26,9 @@ export default function GameUI({
     <div className="absolute inset-0 z-20 pointer-events-none">
       {config.ui.showScore && (
         <div
-          className="absolute top-4 left-4 font-bold"
+          className="absolute top-2 left-2 sm:top-4 sm:left-4 font-bold text-lg sm:text-2xl"
           style={{
             color: config.ui.colors.score,
-            fontSize: config.ui.fontSize.score
-              .replace("text-", "")
-              .replace("xl", "px")
-              .replace("2xl", "px"),
           }}
         >
           {score}
@@ -41,12 +37,9 @@ export default function GameUI({
 
       {config.ui.showHighScore && (
         <div
-          className="absolute top-4 right-4 font-bold"
+          className="absolute top-2 right-2 sm:top-4 sm:right-4 font-bold text-sm sm:text-lg"
           style={{
             color: config.ui.colors.score,
-            fontSize: config.ui.fontSize.instruction
-              .replace("text-", "")
-              .replace("lg", "px"),
           }}
         >
           Best: {highScore}
@@ -60,12 +53,9 @@ export default function GameUI({
             style={{ color: config.ui.colors.text }}
           >
             <h1
-              className="font-bold mb-4"
+              className="font-bold mb-4 text-4xl sm:text-6xl"
               style={{
                 color: config.ui.colors.title,
-                fontSize: config.ui.fontSize.title
-                  .replace("text-", "")
-                  .replace("6xl", "px"),
               }}
             >
               Flappy Bird
@@ -73,23 +63,17 @@ export default function GameUI({
             {config.ui.showInstructions && (
               <>
                 <p
-                  className="mb-2"
+                  className="mb-2 text-base sm:text-lg"
                   style={{
                     color: config.ui.colors.instruction,
-                    fontSize: config.ui.fontSize.instruction
-                      .replace("text-", "")
-                      .replace("xl", "px"),
                   }}
                 >
                   Press SPACE or Click to start
                 </p>
                 <p
-                  className="opacity-75"
+                  className="opacity-75 text-sm sm:text-base"
                   style={{
                     color: config.ui.colors.instruction,
-                    fontSize: config.ui.fontSize.instruction
-                      .replace("text-", "")
-                      .replace("lg", "px"),
                   }}
                 >
                   Avoid the pipes!

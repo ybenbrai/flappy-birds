@@ -55,7 +55,7 @@ export interface GameSession {
 }
 
 export interface ReplayData {
-  actions: GameAction[];
+  actions: ReplayAction[];
   timestamps: number[];
   config: Record<string, unknown>;
   seed?: number; // for deterministic replays

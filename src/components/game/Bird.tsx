@@ -14,10 +14,10 @@ export default function Bird({ bird }: BirdProps) {
     <div
       className="absolute z-10 transition-transform duration-75"
       style={{
-        left: `${bird.position.x}px`,
-        top: `${bird.position.y}px`,
-        width: `${bird.size}px`,
-        height: `${bird.size}px`,
+        left: `${(bird.position.x / 400) * 100}%`,
+        top: `${(bird.position.y / 600) * 100}%`,
+        width: `${(bird.size / 400) * 100}%`,
+        height: `${(bird.size / 600) * 100}%`,
         transform: `rotate(${bird.rotation}deg)`,
       }}
     >

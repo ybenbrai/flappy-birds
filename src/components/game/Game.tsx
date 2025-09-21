@@ -119,27 +119,26 @@ export default function Game() {
   ]);
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 p-4">
-      <div className="relative">
-        {/* Top Bar with User Profile and Settings */}
-        <div className="absolute -top-16 left-0 right-0 flex justify-between items-center z-30">
-          <UserProfile onShowLogin={() => setShowLogin(true)} />
-          <Button
-            onClick={() => setShowSettings(true)}
-            variant="secondary"
-            size="sm"
-          >
-            ⚙️ Settings
-          </Button>
-        </div>
+    <div className="w-full h-screen bg-gray-900 flex flex-col">
+      {/* Top Bar with User Profile and Settings */}
+      <div className="flex justify-between items-center p-4 bg-gray-800 z-30">
+        <UserProfile onShowLogin={() => setShowLogin(true)} />
+        <Button
+          onClick={() => setShowSettings(true)}
+          variant="secondary"
+          size="sm"
+        >
+          ⚙️ Settings
+        </Button>
+      </div>
 
-        {/* Game Container */}
-        <div className="relative overflow-hidden rounded-lg border-4 border-gray-800 shadow-2xl">
+      {/* Game Container - Full Screen */}
+      <div className="flex-1 flex items-center justify-center p-4">
+        <div className="game-container relative w-full h-full max-w-4xl max-h-[calc(100vh-120px)]">
           <div
-            className="relative"
+            className="relative w-full h-full overflow-hidden rounded-lg border-4 border-gray-800 shadow-2xl"
             style={{
-              width: `${state.gameWidth}px`,
-              height: `${state.gameHeight}px`,
+              aspectRatio: `${state.gameWidth} / ${state.gameHeight}`,
             }}
           >
             <Background
@@ -176,15 +175,15 @@ export default function Game() {
             )}
           </div>
         </div>
-
-        {/* Modals */}
-        <SettingsPanel
-          isOpen={showSettings}
-          onClose={() => setShowSettings(false)}
-        />
-
-        <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
       </div>
+
+      {/* Modals */}
+      <SettingsPanel
+        isOpen={showSettings}
+        onClose={() => setShowSettings(false)}
+      />
+
+      <LoginModal isOpen={showLogin} onClose={() => setShowLogin(false)} />
     </div>
   );
 }
