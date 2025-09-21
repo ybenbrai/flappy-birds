@@ -16,12 +16,21 @@ export function useGame() {
   };
 
   const initialState: GameState = {
+    // Core game state
     isPlaying: false,
     isGameOver: false,
+    isPaused: false,
     score: 0,
     highScore: 0,
+    level: 1,
+    experience: 0,
+
+    // Game objects
     bird: initialBird,
     pipes: [],
+    powerUps: [],
+
+    // Physics and configuration
     gravity: config.physics.gravity,
     jumpForce: config.physics.jumpForce,
     pipeSpeed: config.pipes.speed,
@@ -30,6 +39,19 @@ export function useGame() {
     pipeSpawnRate: config.pipes.spawnRate,
     gameWidth: config.dimensions.width,
     gameHeight: config.dimensions.height,
+
+    // Session data
+    sessionId: undefined,
+    startTime: undefined,
+    duration: 0,
+
+    // Multiplayer/Competition
+    isCompetition: false,
+    competitionId: undefined,
+    isSpectating: false,
+
+    // Replay data
+    replayActions: [],
   };
 
   function gameReducer(state: GameState, action: GameAction): GameState {
@@ -39,23 +61,51 @@ export function useGame() {
           ...state,
           isPlaying: true,
           isGameOver: false,
+          isPaused: false,
           score: 0,
           bird: initialBird,
           pipes: [],
+          powerUps: [],
+          startTime: new Date(),
+          duration: 0,
+          replayActions: [],
         };
 
       case "JUMP":
-        if (!state.isPlaying || state.isGameOver) return state;
+        if (!state.isPlaying || state.isGameOver || state.isPaused)
+          return state;
         return {
           ...state,
           bird: {
             ...state.bird,
             velocity: { ...state.bird.velocity, y: state.jumpForce },
           },
+          replayActions: [
+            ...state.replayActions,
+            {
+              type: "jump",
+              timestamp: Date.now() - (state.startTime?.getTime() || 0),
+            },
+          ],
+        };
+
+      case "PAUSE_GAME":
+        if (!state.isPlaying || state.isGameOver) return state;
+        return {
+          ...state,
+          isPaused: true,
+        };
+
+      case "RESUME_GAME":
+        if (!state.isPlaying || state.isGameOver) return state;
+        return {
+          ...state,
+          isPaused: false,
         };
 
       case "UPDATE_GAME":
-        if (!state.isPlaying || state.isGameOver) return state;
+        if (!state.isPlaying || state.isGameOver || state.isPaused)
+          return state;
 
         const newBird = {
           ...state.bird,
@@ -122,15 +172,26 @@ export function useGame() {
 
         const isCollision = checkCollision(newBird, newPipes, state);
 
+        // Calculate experience and level
+        const experienceGained = Math.floor(newScore / 10);
+        const newExperience = state.experience + experienceGained;
+        const newLevel = Math.floor(newExperience / 1000) + 1;
+        // const leveledUp = newLevel > state.level; // Could be used for level up effects
+
         return {
           ...state,
           bird: newBird,
           pipes: newPipes,
           score: newScore,
+          experience: newExperience,
+          level: newLevel,
           isGameOver: isCollision,
           highScore: isCollision
             ? Math.max(state.highScore, newScore)
             : state.highScore,
+          duration: state.startTime
+            ? Math.floor((Date.now() - state.startTime.getTime()) / 1000)
+            : 0,
         };
 
       case "GAME_OVER":
@@ -146,9 +207,40 @@ export function useGame() {
           ...state,
           isPlaying: false,
           isGameOver: false,
+          isPaused: false,
           score: 0,
           bird: initialBird,
           pipes: [],
+          powerUps: [],
+          startTime: undefined,
+          duration: 0,
+          replayActions: [],
+        };
+
+      case "LEVEL_UP":
+        return {
+          ...state,
+          // Level up effects could be added here
+        };
+
+      case "SCORE_UPDATE":
+        return {
+          ...state,
+          score: state.score + action.points,
+        };
+
+      case "SESSION_START":
+        return {
+          ...state,
+          sessionId: action.sessionId,
+          startTime: new Date(),
+        };
+
+      case "SESSION_END":
+        return {
+          ...state,
+          sessionId: undefined,
+          startTime: undefined,
         };
 
       default:
@@ -186,6 +278,14 @@ export function useGame() {
 
   const startGame = useCallback(() => {
     dispatch({ type: "START_GAME" });
+  }, []);
+
+  const pauseGame = useCallback(() => {
+    dispatch({ type: "PAUSE_GAME" });
+  }, []);
+
+  const resumeGame = useCallback(() => {
+    dispatch({ type: "RESUME_GAME" });
   }, []);
 
   const jump = useCallback(() => {
@@ -232,6 +332,8 @@ export function useGame() {
   return {
     state,
     startGame,
+    pauseGame,
+    resumeGame,
     jump,
     resetGame,
   };

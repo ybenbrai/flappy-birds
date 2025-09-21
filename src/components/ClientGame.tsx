@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import { GameConfigProvider } from "@/contexts/GameConfigContext";
+import { UserProvider } from "@/contexts/UserContext";
 
 const Game = dynamic(() => import("./game/Game"), {
   ssr: false,
@@ -14,8 +15,10 @@ const Game = dynamic(() => import("./game/Game"), {
 
 export default function ClientGame() {
   return (
-    <GameConfigProvider>
-      <Game />
-    </GameConfigProvider>
+    <UserProvider>
+      <GameConfigProvider>
+        <Game />
+      </GameConfigProvider>
+    </UserProvider>
   );
 }

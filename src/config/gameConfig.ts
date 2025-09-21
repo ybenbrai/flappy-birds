@@ -86,17 +86,17 @@ export interface GameConfig {
 // Default Configuration
 export const defaultGameConfig: GameConfig = {
   physics: {
-    gravity: 0.21,
-    jumpForce: -5,
+    gravity: 0.25,
+    jumpForce: -5.5,
     birdSize: 30,
     birdRotationMultiplier: 3,
   },
 
   pipes: {
-    speed: 1.5,
-    gap: 180,
-    width: 50,
-    spawnRate: 150,
+    speed: 1.8,
+    gap: 160,
+    width: 55,
+    spawnRate: 140,
     minHeight: 100,
     maxHeight: 300,
   },
